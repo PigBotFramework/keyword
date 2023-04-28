@@ -1,6 +1,7 @@
-import requests, time, json, cache
-from pbf import PBF
-from utils.RegCmd import RegCmd
+import requests, time, json
+from pbf.controller import Cache
+from pbf.controller.PBF import PBF
+from pbf.utils.RegCmd import RegCmd
 
 _name = "关键词系统"
 _version = "1.0.1"
@@ -11,66 +12,54 @@ _cost = 0.00
 class keyword(PBF):
     def __enter__(self):
         return [
-            RegCmd(
-                name = "加回复",
-                usage = "加回复",
-                permission = "anyone",
-                function = "keyword@addKeyword",
-                description = "添加关  键  词",
-                mode = "关  键  词",
-                hidden = 0,
-                type = "command"
-            ),
-            RegCmd(
-                name = "删回复 ",
-                usage = "删回复 <关键词>",
-                permission = "owner",
-                function = "keyword@delKeyword",
-                description = "删除对应的关  键  词",
-                mode = "关  键  词",
-                hidden = 0,
-                type = "command"
-            ),
-            RegCmd(
-                name = "关键词审查列表",
-                usage = "关键词审查列表",
-                permission = "owner",
-                function = "keyword@vKw",
-                description = "查看关键词审查列表",
-                mode = "关  键  词",
-                hidden = 0,
-                type = "command"
-            ),
-            RegCmd(
-                name = "关键词审查 ",
-                usage = "关键词审查 <ID> <是否通过>",
-                permission = "owner",
-                function = "keyword@tKw",
-                description = "审核关  键  词",
-                mode = "关  键  词",
-                hidden = 0,
-                type = "command"
-            ),
-            RegCmd(
-                name = "关键词垃圾箱",
-                usage = "关键词垃圾箱",
-                permission = "owner",
-                function = "keyword@bKw",
-                description = "查看未通过审核的关  键  词",
-                mode = "关  键  词",
-                hidden = 0,
-                type = "command"
-            ),
-            RegCmd(
-                name = "关键词替换列表",
-                usage = "关键词替换列表",
-                permission = "anyone",
-                function = "keyword@ListReplace",
-                description = "查看关键词替换列表",
-                mode = "关  键  词",
-                hidden = 0,
-                type = "command"
-            )
+    @RegCmd(
+        name = "加回复",
+        usage = "加回复",
+        permission = "anyone",
+        function = "keyword@addKeyword",
+        description = "添加关  键  词",
+        mode = "关  键  词"
+    )
+    @RegCmd(
+        name = "删回复 ",
+        usage = "删回复 <关键词>",
+        permission = "owner",
+        function = "keyword@delKeyword",
+        description = "删除对应的关  键  词",
+        mode = "关  键  词"
+    )
+    @RegCmd(
+        name = "关键词审查列表",
+        usage = "关键词审查列表",
+        permission = "owner",
+        function = "keyword@vKw",
+        description = "查看关键词审查列表",
+        mode = "关  键  词"
+    )
+    @RegCmd(
+        name = "关键词审查 ",
+        usage = "关键词审查 <ID> <是否通过>",
+        permission = "owner",
+        function = "keyword@tKw",
+        description = "审核关  键  词",
+        mode = "关  键  词"
+    )
+    @RegCmd(
+        name = "关键词垃圾箱",
+        usage = "关键词垃圾箱",
+        permission = "owner",
+        function = "keyword@bKw",
+        description = "查看未通过审核的关  键  词",
+        mode = "关  键  词"
+    )
+    @RegCmd(
+        name = "关键词替换列表",
+        usage = "关键词替换列表",
+        permission = "anyone",
+        function = "keyword@ListReplace",
+        description = "查看关键词替换列表",
+        mode = "关  键  词"
+    )
         ]
     
     def vKw(self):
@@ -148,10 +137,10 @@ class keyword(PBF):
             
             if uid == self.data.botSettings.get('owner'):
                 g_id = 0
-                mode = 0
+        mode = 0
             else:
                 g_id = self.data.se.get("group_id")
-                mode = 1
+        mode = 1
             
             self.mysql.commonx('INSERT INTO `botKeyword` (`key`, `value`, `state`, `uid`, `coin`, `uuid`, `qn`) VALUES (%s, %s, %s, %s, %s, %s, %s);', (key, value, mode, uid, message, self.data.uuid, g_id))
             self.client.msg().raw('恭喜你，现在只需要等待我的主人审核通过后就可以啦！')

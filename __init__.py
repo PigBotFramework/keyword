@@ -10,58 +10,13 @@ _author = "xzyStudio"
 _cost = 0.00
 
 class keyword(PBF):
-    def __enter__(self):
-        return [
-    @RegCmd(
-        name = "加回复",
-        usage = "加回复",
-        permission = "anyone",
-        function = "keyword@addKeyword",
-        description = "添加关  键  词",
-        mode = "关  键  词"
-    )
-    @RegCmd(
-        name = "删回复 ",
-        usage = "删回复 <关键词>",
-        permission = "owner",
-        function = "keyword@delKeyword",
-        description = "删除对应的关  键  词",
-        mode = "关  键  词"
-    )
     @RegCmd(
         name = "关键词审查列表",
         usage = "关键词审查列表",
         permission = "owner",
-        function = "keyword@vKw",
         description = "查看关键词审查列表",
         mode = "关  键  词"
     )
-    @RegCmd(
-        name = "关键词审查 ",
-        usage = "关键词审查 <ID> <是否通过>",
-        permission = "owner",
-        function = "keyword@tKw",
-        description = "审核关  键  词",
-        mode = "关  键  词"
-    )
-    @RegCmd(
-        name = "关键词垃圾箱",
-        usage = "关键词垃圾箱",
-        permission = "owner",
-        function = "keyword@bKw",
-        description = "查看未通过审核的关  键  词",
-        mode = "关  键  词"
-    )
-    @RegCmd(
-        name = "关键词替换列表",
-        usage = "关键词替换列表",
-        permission = "anyone",
-        function = "keyword@ListReplace",
-        description = "查看关键词替换列表",
-        mode = "关  键  词"
-    )
-        ]
-    
     def vKw(self):
         uid = self.data.se.get('user_id')
         gid = self.data.se.get('group_id')
@@ -71,7 +26,14 @@ class keyword(PBF):
         for i in vKwList:
             message += '\n[CQ:face,id=54] 关键词：'+str(i.get('key'))+'\n      回复：'+str(i.get('value'))+'\n      ID：'+str(i.get('id'))
         self.client.msg().raw(message)
-        
+    
+    @RegCmd(
+        name = "关键词垃圾箱",
+        usage = "关键词垃圾箱",
+        permission = "owner",
+        description = "查看未通过审核的关  键  词",
+        mode = "关  键  词"
+    )
     def bKw(self):
         uid = self.data.se.get('user_id')
         gid = self.data.se.get('group_id')
@@ -81,7 +43,14 @@ class keyword(PBF):
         for i in vKwList:
             message += '\n[CQ:face,id=54] 关键词：'+str(i.get('key'))+'\n      回复：'+str(i.get('value'))+'\n      ID：'+str(i.get('id'))
         self.client.msg().raw(message)
-        
+    
+    @RegCmd(
+        name = "关键词审查 ",
+        usage = "关键词审查 <ID> <是否通过>",
+        permission = "owner",
+        description = "审核关  键  词",
+        mode = "关  键  词"
+    )
     def tKw(self):
         uid = self.data.se.get('user_id')
         gid = self.data.se.get('group_id')
@@ -106,6 +75,13 @@ class keyword(PBF):
         
         cache.refreshFromSql('keywordList')
     
+    @RegCmd(
+        name = "加回复",
+        usage = "加回复",
+        permission = "anyone",
+        description = "添加关  键  词",
+        mode = "关  键  词"
+    )
     def addKeyword(self):
         uid = self.data.se.get('user_id')
         gid = self.data.se.get('group_id')
@@ -146,7 +122,14 @@ class keyword(PBF):
             self.client.msg().raw('恭喜你，现在只需要等待我的主人审核通过后就可以啦！')
             
             cache.refreshFromSql('keywordList')
-        
+    
+    @RegCmd(
+        name = "删回复 ",
+        usage = "删回复 <关键词>",
+        permission = "owner",
+        description = "删除对应的关  键  词",
+        mode = "关  键  词"
+    )
     def delKeyword(self):
         uid = self.data.se.get('user_id')
         gid = self.data.se.get('group_id')
@@ -166,7 +149,14 @@ class keyword(PBF):
         for i in cache.get("keywordList").get(self.data.uuid):
             message1 += '\n[CQ:face,id=54] 关键词：'+str(i.get('key'))+'\n      回复：'+str(i.get('value'))+'\n      ID：'+str(i.get('id'))
         self.client.msg().raw(message1)
-        
+    
+    @RegCmd(
+        name = "关键词替换列表",
+        usage = "关键词替换列表",
+        permission = "anyone",
+        description = "查看关键词替换列表",
+        mode = "关  键  词"
+    )
     def ListReplace(self):
         uid = self.data.se.get('user_id')
         gid = self.data.se.get('group_id')

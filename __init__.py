@@ -1,5 +1,5 @@
+import time
 from pbf.controller.PBF import PBF
-from pbf.controller import Cache
 from pbf.utils.RegCmd import RegCmd
 from pbf.model.KeywordModel import KeywordModel
 from pbf.model.KeywordReplaceModel import KeywordReplaceModel
@@ -112,7 +112,7 @@ class keyword(PBF):
             else:
                 g_id = self.data.se.get("group_id")
                 mode = 1
-            KeywordModel()._insert(key=key, value=value, state=mode, uid=uid, coin=message, uuid=self.data.uuid, qn=g_id)
+            KeywordModel()._insert(key=key, value=value, state=mode, uid=uid, coin=message, uuid=self.data.uuid, qn=g_id, time=time.time())
             self.client.msg().raw('恭喜你，现在只需要等待我的主人审核通过后就可以啦！')
 
     @RegCmd(
@@ -127,14 +127,6 @@ class keyword(PBF):
 
         KeywordModel()._delete(key=message, uuid=self.data.uuid)
         self.client.msg().raw('[CQ:face,id=54] 删除成功！')
-
-    def listKeyword(self):
-        message1 = '[CQ:face,id=151] {0}-关  键  词列表'.format(self.data.botSettings._get('name'))
-        for i in Cache.get("keywordList").get(self.data.uuid):
-            message1 += '\n[CQ:face,id=54] 关键词：' + str(i.get('key')) + '\n      回复：' + str(
-                i.get('value')) + '\n      ID：' + str(i.get('id'))
-        self.client.msg().raw(message1)
-
 
     @RegCmd(
         name="关键词替换列表",

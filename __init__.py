@@ -23,6 +23,7 @@ class keyword(PBF):
     def vKw(self):
         vKwList = KeywordModel()._get(state=1, uuid=self.data.uuid)
         message = '[CQ:face,id=151] {0}-关  键  词审核'.format(self.data.botSettings._get('name'))
+        print(vKwList)
         for i in vKwList:
             message += '\n[CQ:face,id=54] 关键词：' + str(i.get('key')) + '\n      回复：' + str(
                 i.get('value')) + '\n      ID：' + str(i.get('id'))
